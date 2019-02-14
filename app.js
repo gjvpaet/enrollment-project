@@ -10,7 +10,6 @@ const config = require('./config');
 const app = express();
 
 const userRoutes = require('./routes/users');
-const bookRoutes = require('./routes/books');
 const enrollmentRoutes = require('./routes/enrollment');
 
 mongoose.connect('mongodb://127.0.0.1/enrollment');
@@ -25,7 +24,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 
 app.use('/api/users', userRoutes);
-app.use('/api/books', bookRoutes);  
 app.use('/api/enrollments', enrollmentRoutes);
 
 app.locals.siteUrl = config.siteUrl;

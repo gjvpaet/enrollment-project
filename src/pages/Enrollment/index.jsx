@@ -44,7 +44,6 @@ class Enrollment extends Component {
 
         try {
             let result = await httpService.getAllData('enrollments', jparam({}));
-            console.log('result: ', result);
 
             result.list = result.list.map(data => {
                 data.CreatedDate = moment(data.CreatedAt).format(
@@ -138,7 +137,7 @@ class Enrollment extends Component {
                                 <button
                                     className="btn btn-danger btn-fab btn-icon btn-round"
                                     onClick={e =>
-                                        this.deleteBook(props.original.Id)
+                                        this.deleteEnrollment(props.original.Id)
                                     }
                                 >
                                     <i className="now-ui-icons ui-1_simple-remove" />
@@ -164,12 +163,12 @@ class Enrollment extends Component {
             'Are you sure you want to delete this?',
             async () => {
                 try {
-                    let { data, fetchBooks } = this.props;
+                    let { data, fetchEnrollments } = this.props;
 
-                    let result = await httpService.deleteData(id, 'books');
+                    let result = await httpService.deleteData(id, 'enrollments');
 
                     let newData = data.filter(d => d.Id !== id);
-                    fetchBooks(newData);
+                    fetchEnrollments(newData);
 
                     alertify.success('Successfully deleted data.');
                 } catch (error) {

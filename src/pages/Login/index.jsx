@@ -34,7 +34,7 @@ class Login extends Component {
             localStorage.setItem('userData', JSON.stringify(result.user));
             alertify.success(result.message);
 
-            location.href = `${siteUrl}books`;
+            location.href = `${siteUrl}enrollments`;
         } catch (error) {
             console.log('error: ', error);
             alertify.error('Oops, something went wrong.');

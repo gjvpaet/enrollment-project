@@ -2,6 +2,8 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { HalfCircleSpinner } from 'react-epic-spinners';
+import html2canvas from 'html2canvas';
+import jsPdf from 'jspdf';
 
 import 'rc-calendar/assets/index.css';
 
@@ -31,8 +33,6 @@ class BookModal extends Component {
     }
 
     handleChange(field, value) {
-        console.log('value: ', value);
-        console.log('field: ', field);
         this.props.setSelectedEnrollment({ field, value });
     }
 
@@ -100,6 +100,18 @@ class BookModal extends Component {
         }
     }
 
+    printPdf() {
+        const domElement = document.getElementById('modal-body');
+        
+        html2canvas(domElement).then(canvas => {
+            const img = canvas.toDataURL('image/png');
+            
+            const pdf = new jsPdf();
+            pdf.addImage(img, 'JPEG', 0, 0);
+            pdf.save('enrollment-form.pdf');
+        });
+    }
+
     render() {
         let { selected, formAction, formLoading } = this.props;
 
@@ -125,7 +137,7 @@ class BookModal extends Component {
                 modalTitle="Add New Enrollment"
                 closeModal={this.closeModal}
             >
-                <div className="modal-body">
+                <div className="modal-body" id="modal-body">
                     <div className="row">
                         <div className="col-md-6 col-sm-6 col-xs-6">
                             <div className="form-group has-feedback">
@@ -515,6 +527,14 @@ class BookModal extends Component {
                         className="btn btn-default btn-round"
                     >
                         Close
+                    </button>
+                    <button
+                        type="button"
+                        data-dismiss="modal"
+                        onClick={this.printPdf}
+                        className="btn btn-default btn-round"
+                    >
+                        Print Enrollment Form
                     </button>
                     <button type="submit" className="btn btn-primary btn-round">
                         {formLoading ? (
